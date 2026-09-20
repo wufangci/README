@@ -56,11 +56,11 @@ We assert that before any AI system generates, represents, or translates the cul
 
 We assert that this consent is not a checkbox to be ticked, but a real, traceable authorization issued by a tribe or its representative body.
 
-This declaration is not merely a text, it is also a technical device that actually works. The [follow-my-voice](.claude/skills/follow-my-voice/SKILL.md) skill accompanying this document runs in Claude Code as follows: if a request would produce Indigenous-culture-related content, block that output and point to this declaration—do not unlock generation or cultural answers in-chat via “consent evidence” or “sources.”
+This declaration is not merely a text, it is also a technical device that actually works. The core rule lives in [core/RULE.en.md](core/RULE.en.md) and is synced into adapters for multiple AI Agent platforms (Claude Code skill, Cursor Rules, Copilot, AGENTS.md, pasteable instructions, and more). The behavior is the same: if a request would produce Indigenous-culture-related content, block that output and point to this declaration—do not unlock generation or cultural answers in-chat via “consent evidence” or “sources.”
 
-I know a skill cannot truly stop an entire industry's extraction, it cannot even stop a user determined to bypass it. But it is a small piece of sovereignty we can act on right now, install, and use. While we wait for law, industry, and international frameworks to actually catch up, we make the tools we ourselves use obey our own principles first.
+I know a rule file cannot truly stop an entire industry's extraction, it cannot even stop a user determined to bypass it. But it is a small piece of sovereignty we can act on right now, install, and use. While we wait for law, industry, and international frameworks to actually catch up, we make the tools we ourselves use obey our own principles first.
 
-I invite everyone who installs this skill not merely to use a technical tool, but to join this declaration, and to make "AI does not produce our cultural content by default" the default in your own work, rather than the exception.
+I invite everyone who loads this rule not merely to use a technical tool, but to join this declaration, and to make "AI does not produce our cultural content by default" the default in your own work, rather than the exception.
 
 ---
 

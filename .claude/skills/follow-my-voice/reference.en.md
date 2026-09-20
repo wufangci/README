@@ -2,8 +2,8 @@
 
 # References and frameworks
 
-Supplement to [SKILL.md](SKILL.md) / [SKILL.en.md](SKILL.en.md).  
-**Current skill rule is simple: would produce Indigenous-culture-related content → block, and point to the manifesto.** The frameworks below ground that stance; they are **not** conditions for allowing generation or cultural answers inside this tool after “showing evidence.”
+Supplement to [SKILL.md](SKILL.md) / [core/RULE.en.md](../../../core/RULE.en.md).  
+**Current rule is simple: would produce Indigenous-culture-related content → block, and point to the manifesto.** The frameworks below ground that stance; they are **not** conditions for allowing generation or cultural answers inside this tool after “showing evidence.”
 
 ## Taiwan: Protection Act for the Traditional Intellectual Creations of Indigenous Peoples
 

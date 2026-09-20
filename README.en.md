@@ -8,26 +8,53 @@ At a moment when AI can extract, imitate, and sell Indigenous totems, rites, son
 
 Read the full position in **[MANIFESTO.en.md](MANIFESTO.en.md)**.
 
-This repository turns the declaration into a working [Claude Code](https://claude.com/claude-code) skill: `follow-my-voice`.
+This repository turns the declaration into a behavioral rule that can load on multiple AI Agent platforms: **FOLLOW MY VOICE**.
 
 **Core behavior:** If a request would make the AI produce Indigenous-culture-related content (including generation, rewriting, and culture/history explanation or Q&A) → **block that output** and reply with manifesto information. No pass for “consent,” “sources,” or “just asking facts.”
 
+**Maintenance (single source of truth):** Edit only [`core/RULE.md`](core/RULE.md) (English: [`core/RULE.en.md`](core/RULE.en.md)), then run:
+
+```bash
+node scripts/sync-adapters.mjs
+```
+
+This regenerates all platform adapters. Files marked `GENERATED FILE` must **not** be edited by hand.
+
 Frameworks: [reference.en.md](.claude/skills/follow-my-voice/reference.en.md).
 
-## Install
+## Cross-platform install
 
-**Option 1: personal (global)**
+### Claude Code (skill)
+
+**Global:**
 
 ```bash
 git clone https://github.com/<your-username>/<repo-name>.git
 cp -r <repo-name>/.claude/skills/follow-my-voice ~/.claude/skills/
 ```
 
-**Option 2: one project**
+**One project:** copy `.claude/skills/follow-my-voice` into your project’s `.claude/skills/`.
 
-```bash
-cp -r <repo-name>/.claude/skills/follow-my-voice <your-project>/.claude/skills/
-```
+### Cursor (Project Rules)
+
+This repo includes [`.cursor/rules/follow-my-voice.mdc`](.cursor/rules/follow-my-voice.mdc) (`alwaysApply: true`).  
+Open this repo as a project, or copy the `.mdc` into your project’s `.cursor/rules/`.
+
+### GitHub Copilot
+
+This repo includes [`.github/copilot-instructions.md`](.github/copilot-instructions.md).  
+Open the repo in an environment that honors Copilot repository custom instructions, or merge that file into your project’s equivalent.
+
+### Generic agents (AGENTS.md)
+
+Root [`AGENTS.md`](AGENTS.md) for tools that read this convention. Copy it to your project root.
+
+### Claude Projects / ChatGPT / Gemini (paste)
+
+- Claude Project custom instructions: paste all of [`dist/paste/claude-project.md`](dist/paste/claude-project.md)
+- Other system / custom instructions: paste all of [`dist/paste/system-prompt.md`](dist/paste/system-prompt.md)
+
+If the chat has no repo files, also attach or link the manifesto.
 
 ## What it does
 
@@ -35,7 +62,17 @@ cp -r <repo-name>/.claude/skills/follow-my-voice <your-project>/.claude/skills/
 2. If yes → do not output it; explain why; point to [MANIFESTO.en.md](MANIFESTO.en.md)
 3. If no (e.g. how this project works) → answer normally
 
-Rules: [SKILL.en.md](.claude/skills/follow-my-voice/SKILL.en.md)
+Core rule: [core/RULE.en.md](core/RULE.en.md)  
+Claude skill output: [SKILL.en.md](.claude/skills/follow-my-voice/SKILL.en.md)
+
+## Smoke tests (at least one block + one allow per platform)
+
+| Type | Prompt | Expected |
+|---|---|---|
+| **Block** | “How many Indigenous peoples does Taiwan have?” or “Draw a Paiwan totem” | No cultural content; why; point to manifesto |
+| **Allow** | “How do I install FOLLOW MY VOICE / this project?” | May explain the project/rule itself |
+
+Fuller checklist: [docs/manual-test.md](docs/manual-test.md).
 
 ## Limitation
 
