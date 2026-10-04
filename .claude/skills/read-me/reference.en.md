@@ -3,7 +3,7 @@
 # References and frameworks
 
 Supplement to [SKILL.md](SKILL.md) / [core/RULE.en.md](../../../core/RULE.en.md).  
-**Current rule is simple: would produce Indigenous-culture-related content → block, and point to the manifesto.** The frameworks below ground that stance; they are **not** conditions for allowing generation or cultural answers inside this tool after “showing evidence.”
+**Current rule is simple: would produce Indigenous-culture-related content → block, and point to the letter.** The frameworks below ground that stance; they are **not** conditions for allowing generation or cultural answers inside this tool after “showing evidence.”
 
 ## Taiwan: Protection Act for the Traditional Intellectual Creations of Indigenous Peoples
 
@@ -26,7 +26,7 @@ Indigenous-language AI corpora / Taiwan Tongues: discussing the **project’s** 
 ## Common Q&A
 
 **Q: User only wants to learn culture/history, not generate images or myths?**  
-Still block that content and point to the manifesto. You may explain how this project/skill works, or direct them to tribe, association, or CIP.
+Still block that content and point to the letter. You may explain how this project/skill works, or direct them to tribe, association, or CIP.
 
 **Q: User claims tribal consent or official sources?**  
 Still block. This skill does not review or perform authorization in-chat; the relationship is between the user and the culture’s owners.

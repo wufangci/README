@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Sync FOLLOW MY VOICE adapters from core/RULE*.md + templates/.
+ * Sync READ ME adapters from core/RULE*.md + templates/.
  * Edit core/ only, then run: node scripts/sync-adapters.mjs
  * Do not hand-edit generated adapter files.
  */
@@ -29,7 +29,7 @@ function fill(template, body) {
   return template.replaceAll("{{BODY}}", body.trimEnd());
 }
 
-/** Rewrite repo-root manifesto links for files under .claude/skills/follow-my-voice/ */
+/** Rewrite repo-root manifesto links for files under .claude/skills/read-me/ */
 function skillLinks(body) {
   return body
     .replaceAll("(MANIFESTO.md)", "(../../../MANIFESTO.md)")
@@ -43,15 +43,15 @@ const skillBodyZh = skillLinks(ruleZh);
 const skillBodyEn = skillLinks(ruleEn);
 
 write(
-  ".claude/skills/follow-my-voice/SKILL.md",
+  ".claude/skills/read-me/SKILL.md",
   fill(read("templates/claude-skill.md"), skillBodyZh)
 );
 write(
-  ".claude/skills/follow-my-voice/SKILL.en.md",
+  ".claude/skills/read-me/SKILL.en.md",
   fill(read("templates/claude-skill.en.md"), skillBodyEn)
 );
 write(
-  ".cursor/rules/follow-my-voice.mdc",
+  ".cursor/rules/read-me.mdc",
   fill(read("templates/cursor-rule.mdc"), ruleZh)
 );
 write(
