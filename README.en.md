@@ -27,16 +27,18 @@ Frameworks: [reference.en.md](.claude/skills/readme/reference.en.md).
 **Global:**
 
 ```bash
-git clone https://github.com/<your-username>/<repo-name>.git
-cp -r <repo-name>/.claude/skills/readme ~/.claude/skills/
+git clone https://github.com/wufangci/README.git
+cp -r README/.claude/skills/readme ~/.claude/skills/
 ```
 
 **One project:** copy `.claude/skills/readme` into your project’s `.claude/skills/`.
 
+The skill folder already carries `LETTER.md` and `LETTER.en.md`, so the letter travels with it.
+
 ### Cursor (Project Rules)
 
 This repo includes [`.cursor/rules/readme.mdc`](.cursor/rules/readme.mdc) (`alwaysApply: true`).  
-Open this repo as a project, or copy the `.mdc` into your project’s `.cursor/rules/`.
+Open this repo as a project, or copy the `.mdc` into your project’s `.cursor/rules/` **and put `LETTER.md` and `LETTER.en.md` in your project root**, or the rule cannot read the letter when it triggers.
 
 ### GitHub Copilot
 
@@ -45,12 +47,13 @@ Open the repo in an environment that honors Copilot repository custom instructio
 
 ### Generic agents (AGENTS.md)
 
-Root [`AGENTS.md`](AGENTS.md) for tools that read this convention. Copy it to your project root.
+Root [`AGENTS.md`](AGENTS.md) for tools that read this convention. Copy it to your project root **together with `LETTER.md` and `LETTER.en.md`**.
 
 ### Claude Projects / ChatGPT / Gemini (paste)
 
 - Claude Project custom instructions: paste all of [`dist/paste/claude-project.md`](dist/paste/claude-project.md)
 - Other system / custom instructions: paste all of [`dist/paste/system-prompt.md`](dist/paste/system-prompt.md)
+- ChatGPT’s “Custom instructions” field has a length limit and cannot hold the full text; use a Custom GPT or Projects instructions instead
 
 If the chat has no repo files, put `LETTER.en.md` in the project knowledge. Without that text, the model cannot show the letter verbatim when the rule triggers.
 

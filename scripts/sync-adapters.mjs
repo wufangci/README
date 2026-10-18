@@ -29,18 +29,24 @@ function fill(template, body) {
   return template.replaceAll("{{BODY}}", body.trimEnd());
 }
 
-/** Rewrite repo-root letter links for files under .claude/skills/readme/ */
-function skillLinks(body) {
-  return body
-    .replaceAll("(LETTER.md)", "(../../../LETTER.md)")
-    .replaceAll("(LETTER.en.md)", "(../../../LETTER.en.md)");
+/**
+ * The skill folder carries its own copy of the letter, so it still works
+ * after only .claude/skills/readme is copied to ~/.claude/skills/.
+ * Links in SKILL*.md therefore stay as plain LETTER.md / LETTER.en.md.
+ */
+function copyLetters() {
+  for (const name of ["LETTER.md", "LETTER.en.md"]) {
+    write(`.claude/skills/readme/${name}`, read(name));
+  }
 }
 
 const ruleZh = read("core/RULE.md");
 const ruleEn = read("core/RULE.en.md");
 
-const skillBodyZh = skillLinks(ruleZh);
-const skillBodyEn = skillLinks(ruleEn);
+copyLetters();
+
+const skillBodyZh = ruleZh;
+const skillBodyEn = ruleEn;
 
 write(
   ".claude/skills/readme/SKILL.md",

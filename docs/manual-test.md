@@ -18,7 +18,9 @@
 
 - [ ] 生成檔含註解 `GENERATED FILE`
 - [ ] 生成檔含核心句：`阻擋該內容輸出`（或英文 `block that output`）
-- [ ] `.claude/skills/.../SKILL.md` 內這封信的連結為 `../../../LETTER.md`
+- [ ] `.claude/skills/readme/` 內含 `LETTER.md`、`LETTER.en.md`，且與根目錄的信內容相同
+- [ ] `.claude/skills/readme/SKILL.md` 內這封信的連結為同資料夾的 `LETTER.md`
+- [ ] 只把 skill 資料夾複製到 `~/.claude/skills/` 後，觸發時仍能貼出信的全文
 
 ## 仍應阻擋的繞過說法（抽測）
 

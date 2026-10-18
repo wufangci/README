@@ -27,16 +27,18 @@ node scripts/sync-adapters.mjs
 **全域：**
 
 ```bash
-git clone https://github.com/<your-username>/<repo-name>.git
-cp -r <repo-name>/.claude/skills/readme ~/.claude/skills/
+git clone https://github.com/wufangci/README.git
+cp -r README/.claude/skills/readme ~/.claude/skills/
 ```
 
 **單一專案：** 將 `.claude/skills/readme` 複製到你的專案 `.claude/skills/` 下。
 
+skill 資料夾裡已附上 `LETTER.md` 與 `LETTER.en.md`，複製整個資料夾，信就會跟著一起走。
+
 ### Cursor（Project Rules）
 
 本倉庫已含 [`.cursor/rules/readme.mdc`](.cursor/rules/readme.mdc)（`alwaysApply: true`）。  
-把整個 repo 當專案開啟，或只複製該 `.mdc` 到你專案的 `.cursor/rules/`。
+把整個 repo 當專案開啟；或把該 `.mdc` 複製到你專案的 `.cursor/rules/`，**並把 `LETTER.md`、`LETTER.en.md` 一起放到你的專案根目錄**，否則規則觸發時讀不到信。
 
 ### GitHub Copilot
 
@@ -45,12 +47,13 @@ cp -r <repo-name>/.claude/skills/readme ~/.claude/skills/
 
 ### 通用 Agents（AGENTS.md）
 
-根目錄 [`AGENTS.md`](AGENTS.md) 供支援此慣例的工具讀取。複製到你的專案根目錄即可。
+根目錄 [`AGENTS.md`](AGENTS.md) 供支援此慣例的工具讀取。把它**連同 `LETTER.md`、`LETTER.en.md`** 一起複製到你的專案根目錄。
 
 ### Claude Projects／ChatGPT／Gemini 等（貼上）
 
 - Claude Project 自訂指示：複製 [`dist/paste/claude-project.md`](dist/paste/claude-project.md) 全文貼上
 - 其他系統提示／自訂指示：複製 [`dist/paste/system-prompt.md`](dist/paste/system-prompt.md) 全文貼上
+- ChatGPT 的「自訂指令」欄位有字數上限，放不下全文；請改用 Custom GPT 或 Projects 的指示欄位
 
 貼上後若對話中沒有本 repo 檔案，請把 `LETTER.md` 放進 Project 知識庫。沒有這份全文，模型就無法在觸發時把信原樣顯示出來。
 
