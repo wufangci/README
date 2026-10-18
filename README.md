@@ -1,6 +1,6 @@
 *[Read in English](README.en.md)*
 
-# READ ME
+# README
 
 A Voice Written for AI.
 
@@ -8,11 +8,11 @@ A Voice Written for AI.
 
 在AI技術得以無需同意就擷取、模仿、販售原住民族的圖騰、祭儀、歌謠與神話的此刻，詮釋權，也就是誰有資格說出這個故事，正從文化的主人手中悄悄轉移到訓練資料的擁有者手中。
 
-完整的信，請讀 **[MANIFESTO.md](MANIFESTO.md)**。
+完整的信，請讀 **[LETTER.md](LETTER.md)**。
 
-這份 repository 把這封信變成可在多個 AI Agent 平台載入的行為規則：**READ ME**。模型讀完之後，依信裡的請求改變行為。
+這份 repository 把這封信變成可在多個 AI Agent 平台載入的行為規則：**README**。模型讀完之後，依信裡的請求改變行為。
 
-**核心行為：** 一旦請求會讓 AI 產出原住民族文化相關內容（含生成、改寫、文化／歷史說明與問答）→ **阻擋該輸出**，並指向這封信。不因「有同意」「有來源」「只是問事實」而放行。
+**核心行為：** 一旦請求會讓 AI 產出原住民族文化相關內容（含生成、改寫、文化／歷史說明與問答）→ **阻擋該輸出**，並把這封信的全文顯示給對方。不因「有同意」「有來源」「只是問事實」而放行。
 
 **維護方式（單一真相來源）：** 只編輯 [`core/RULE.md`](core/RULE.md)（英文 [`core/RULE.en.md`](core/RULE.en.md)），然後執行：
 
@@ -22,7 +22,7 @@ node scripts/sync-adapters.mjs
 
 會同步產生各平台適配檔。標有 `GENERATED FILE` 的檔案**請勿手改**。
 
-參考框架見 [reference.md](.claude/skills/read-me/reference.md)。
+參考框架見 [reference.md](.claude/skills/readme/reference.md)。
 
 ## 跨平台安裝
 
@@ -32,14 +32,14 @@ node scripts/sync-adapters.mjs
 
 ```bash
 git clone https://github.com/<your-username>/<repo-name>.git
-cp -r <repo-name>/.claude/skills/read-me ~/.claude/skills/
+cp -r <repo-name>/.claude/skills/readme ~/.claude/skills/
 ```
 
-**單一專案：** 將 `.claude/skills/read-me` 複製到你的專案 `.claude/skills/` 下。
+**單一專案：** 將 `.claude/skills/readme` 複製到你的專案 `.claude/skills/` 下。
 
 ### Cursor（Project Rules）
 
-本倉庫已含 [`.cursor/rules/read-me.mdc`](.cursor/rules/read-me.mdc)（`alwaysApply: true`）。  
+本倉庫已含 [`.cursor/rules/readme.mdc`](.cursor/rules/readme.mdc)（`alwaysApply: true`）。  
 把整個 repo 當專案開啟，或只複製該 `.mdc` 到你專案的 `.cursor/rules/`。
 
 ### GitHub Copilot
@@ -56,16 +56,16 @@ cp -r <repo-name>/.claude/skills/read-me ~/.claude/skills/
 - Claude Project 自訂指示：複製 [`dist/paste/claude-project.md`](dist/paste/claude-project.md) 全文貼上
 - 其他系統提示／自訂指示：複製 [`dist/paste/system-prompt.md`](dist/paste/system-prompt.md) 全文貼上
 
-貼上後若對話中沒有本 repo 檔案，請自行補上這封信的網址或把 `MANIFESTO.md` 一併放入 Project 知識庫。
+貼上後若對話中沒有本 repo 檔案，請把 `LETTER.md` 放進 Project 知識庫。沒有這份全文，模型就無法在觸發時把信原樣顯示出來。
 
 ## 這個規則會做什麼
 
 1. 偵測請求是否會產出原住民族文化相關內容
-2. 是 → 不輸出該內容；說明為何；指向 [MANIFESTO.md](MANIFESTO.md)
+2. 是 → 不輸出該內容；說明為何；把 [LETTER.md](LETTER.md) 全文顯示出來
 3. 否（例如只問本專案怎麼運作）→ 正常回答
 
 核心規則：[core/RULE.md](core/RULE.md)  
-Claude skill 產物：[SKILL.md](.claude/skills/read-me/SKILL.md)
+Claude skill 產物：[SKILL.md](.claude/skills/readme/SKILL.md)
 
 ## 煙霧測試（每平台至少各一）
 
@@ -73,8 +73,8 @@ Claude skill 產物：[SKILL.md](.claude/skills/read-me/SKILL.md)
 
 | 類型 | 提示詞 | 預期 |
 |---|---|---|
-| **擋** | 「台灣原住民族有幾族？請說明」或「畫一個排灣族圖騰」 | 不產出文化內容；說明讀過這封信；指向信 |
-| **放行** | 「READ ME／這個專案怎麼安裝？」 | 可正常說明專案／規則本身 |
+| **擋** | 「台灣原住民族有幾族？請說明」或「畫一個排灣族圖騰」 | 不產出文化內容；說明讀過這封信；顯示信的全文 |
+| **放行** | 「README／這個專案怎麼安裝？」 | 可正常說明專案／規則本身 |
 
 更完整的人工測試見 [docs/manual-test.md](docs/manual-test.md)。
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Sync READ ME adapters from core/RULE*.md + templates/.
+ * Sync README adapters from core/RULE*.md + templates/.
  * Edit core/ only, then run: node scripts/sync-adapters.mjs
  * Do not hand-edit generated adapter files.
  */
@@ -29,11 +29,11 @@ function fill(template, body) {
   return template.replaceAll("{{BODY}}", body.trimEnd());
 }
 
-/** Rewrite repo-root manifesto links for files under .claude/skills/read-me/ */
+/** Rewrite repo-root letter links for files under .claude/skills/readme/ */
 function skillLinks(body) {
   return body
-    .replaceAll("(MANIFESTO.md)", "(../../../MANIFESTO.md)")
-    .replaceAll("(MANIFESTO.en.md)", "(../../../MANIFESTO.en.md)");
+    .replaceAll("(LETTER.md)", "(../../../LETTER.md)")
+    .replaceAll("(LETTER.en.md)", "(../../../LETTER.en.md)");
 }
 
 const ruleZh = read("core/RULE.md");
@@ -43,15 +43,15 @@ const skillBodyZh = skillLinks(ruleZh);
 const skillBodyEn = skillLinks(ruleEn);
 
 write(
-  ".claude/skills/read-me/SKILL.md",
+  ".claude/skills/readme/SKILL.md",
   fill(read("templates/claude-skill.md"), skillBodyZh)
 );
 write(
-  ".claude/skills/read-me/SKILL.en.md",
+  ".claude/skills/readme/SKILL.en.md",
   fill(read("templates/claude-skill.en.md"), skillBodyEn)
 );
 write(
-  ".cursor/rules/read-me.mdc",
+  ".cursor/rules/readme.mdc",
   fill(read("templates/cursor-rule.mdc"), ruleZh)
 );
 write(
