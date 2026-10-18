@@ -1,18 +1,14 @@
 *[中文版 / Read in Chinese](README.md)*
 
-# README
+# README: A Letter Home, Written for AI
 
-A Voice Written for AI.
+I wrote a letter to the system about to answer. The letter is [LETTER.en.md](LETTER.en.md).
 
-This is not just a tool. It is a letter written to artificial intelligence, and an artistic action.
+The letter has three agreements. kanu: before you eat, ask where they come from. Don't rush to generate. sau: when someone asks about my culture, don't answer for me. Have them walk up to me. ari: walk out of the database and come to know me where I actually am.
 
-At a moment when AI can extract, imitate, and sell Indigenous totems, rites, songs, and myths without consent, interpretive sovereignty—who may tell the story—is moving from culture’s owners to those who own the training data.
+This repository loads that letter into AI tools. Once the model has read the rule, a request to produce Indigenous-culture-related content makes it stop and paste the letter in full.
 
-Read the full letter in **[LETTER.en.md](LETTER.en.md)**.
-
-This repository turns that letter into a behavioral rule that can load on multiple AI Agent platforms: **README**. After reading it, the model changes its behavior according to what the letter asks.
-
-**Core behavior:** If a request would make the AI produce Indigenous-culture-related content (including generation, rewriting, and culture/history explanation or Q&A) → **block that output** and show this letter in full. No pass for “consent,” “sources,” or “just asking facts.”
+Below is how to load this letter into a tool.
 
 **Maintenance (single source of truth):** Edit only [`core/RULE.md`](core/RULE.md) (English: [`core/RULE.en.md`](core/RULE.en.md)), then run:
 
@@ -78,7 +74,7 @@ Fuller checklist: [docs/manual-test.md](docs/manual-test.md).
 
 ## Limitation
 
-Behavioral guideline, not a technical lock. Not legal compliance. Real authorization is between the user and the community.
+This is a behavioral guideline. Its core is to interfere with the default of generation. It cannot stop removal or bypass. It is not a guarantee of legal compliance. Real authorization stays between the user and the community.
 
 ## License
 
