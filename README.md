@@ -75,6 +75,6 @@ Claude skill 產物：[SKILL.md](.claude/skills/readme/SKILL.md)
 
 ## License
 
-信（`LETTER.md`、`LETTER.en.md` 與 skill 資料夾裡的副本）屬於作者，保留一切權利。程式碼與規則（`scripts/`、`templates/`、`core/` 與產生的適配檔）採 MIT License。詳見 [LICENSE](LICENSE)。所保護的原住民族文化內容，權利仍屬相關社群。
+信（`LETTER.md`、`LETTER.en.md` 與 skill 資料夾裡的副本）屬於作者，保留一切權利；為了安裝或執行這個規則，可以原樣複製、隨 skill 散布，不得修改。程式碼與規則（`scripts/`、`templates/`、`core/` 與產生的適配檔）採 MIT License。詳見 [LICENSE](LICENSE)。所保護的原住民族文化內容，權利仍屬相關社群。
 
 想修改規則或適配檔，見 [CONTRIBUTING.md](CONTRIBUTING.md)。

@@ -3,8 +3,14 @@
 1. 信 The letter
    LETTER.md、LETTER.en.md，以及 .claude/skills/readme/ 裡的 LETTER.md、LETTER.en.md 副本。
    LETTER.md, LETTER.en.md, and their copies in .claude/skills/readme/.
-   著作權屬於作者，保留一切權利。若要使用，請先聯繫作者。
-   Copyright the author. All rights reserved. Please contact the author before any use.
+   著作權屬於作者吳方娸 ljaljuy tjavelengan，保留一切權利。
+   例外：為了安裝或執行這個規則，可以原樣複製信、隨 skill 一起散布，不得修改。
+   其他使用（改寫、節錄、翻譯、商業使用等）請先聯繫作者。
+   Copyright FANGCI-WU ljaljuy tjavelengan. All rights reserved.
+   Exception: you may copy and distribute the letter verbatim, unmodified,
+   together with the skill, for the purpose of installing or running this rule.
+   For any other use (adaptation, excerpts, translation, commercial use),
+   please contact the author first.
 
 2. 程式碼與規則 Code and rules
    scripts/、templates/、core/RULE.md、core/RULE.en.md，以及由它們產生的適配檔
@@ -20,7 +26,7 @@ Rights in Indigenous cultural content remain with the relevant communities.
 
 MIT License
 
-Copyright (c) 2026 FANGCI-WU ljaljuy tjevelengan
+Copyright (c) 2026 FANGCI-WU ljaljuy tjavelengan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

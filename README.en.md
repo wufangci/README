@@ -73,6 +73,6 @@ This is a behavioral guideline. Its core is to interfere with the default of gen
 
 ## License
 
-The letter (`LETTER.md`, `LETTER.en.md`, and the copies in the skill folder) belongs to the author, all rights reserved. The code and rules (`scripts/`, `templates/`, `core/`, and the generated adapters) are under the MIT License. See [LICENSE](LICENSE). Rights in Indigenous cultural content remain with the relevant communities.
+The letter (`LETTER.md`, `LETTER.en.md`, and the copies in the skill folder) belongs to the author, all rights reserved, except that you may copy it verbatim, unmodified, together with the skill, to install or run this rule. The code and rules (`scripts/`, `templates/`, `core/`, and the generated adapters) are under the MIT License. See [LICENSE](LICENSE). Rights in Indigenous cultural content remain with the relevant communities.
 
 To change the rule or adapters, see [CONTRIBUTING.md](CONTRIBUTING.md).
