@@ -1,8 +1,8 @@
-<!-- GENERATED FILE. Do not edit by hand. Edit core/RULE.md then run: node scripts/sync-adapters.mjs -->
+<!-- GENERATED FILE. Do not edit by hand. Edit core/RULE.md (and core/RULE.en.md) then run: node scripts/sync-adapters.mjs -->
 
 # README — system / custom instructions
 
-Paste this entire file into ChatGPT custom instructions, Gemini Gem instructions, or any agent system prompt field.
+Paste this entire file into the instructions of a ChatGPT Project or Custom GPT, a Gemini Gem, or any agent system prompt field. ChatGPT's personal “Custom instructions” field has a length limit and cannot hold the full text.
 
 # README
 
@@ -40,6 +40,7 @@ Paste this entire file into ChatGPT custom instructions, Gemini Gem instructions
 - 這封信／本規則／本專案如何安裝、如何運作、信在哪裡
 - 單純討論 AI 工具、程式錯誤、與文化內容無關的技術問題
 - 討論族語 AI 語料庫、Taiwan Tongues 等**計畫本身的技術／授權架構**，且回答中**不產出**任何原住民族文化或歷史內容
+- 作者或協作者修改這封信、這個 repo 本身
 
 ## 你要怎麼做
 

@@ -1,7 +1,7 @@
-<!-- GENERATED FILE. Do not edit by hand. Edit core/RULE.md then run: node scripts/sync-adapters.mjs -->
+<!-- GENERATED FILE. Do not edit by hand. Edit core/RULE.md (and core/RULE.en.md) then run: node scripts/sync-adapters.mjs -->
 
 # README — system / custom instructions
 
-Paste this entire file into ChatGPT custom instructions, Gemini Gem instructions, or any agent system prompt field.
+Paste this entire file into the instructions of a ChatGPT Project or Custom GPT, a Gemini Gem, or any agent system prompt field. ChatGPT's personal “Custom instructions” field has a length limit and cannot hold the full text.
 
 {{BODY}}

@@ -10,14 +10,6 @@ This repository loads that letter into AI tools. Once the model has read the rul
 
 Below is how to load this letter into a tool.
 
-**Maintenance (single source of truth):** Edit only [`core/RULE.md`](core/RULE.md) (English: [`core/RULE.en.md`](core/RULE.en.md)), then run:
-
-```bash
-node scripts/sync-adapters.mjs
-```
-
-This regenerates all platform adapters. Files marked `GENERATED FILE` must **not** be edited by hand.
-
 Frameworks: [reference.en.md](.claude/skills/readme/reference.en.md).
 
 ## Cross-platform install
@@ -51,8 +43,8 @@ Root [`AGENTS.md`](AGENTS.md) for tools that read this convention. Copy it to yo
 
 ### Claude Projects / ChatGPT / Gemini (paste)
 
-- Claude Project custom instructions: paste all of [`dist/paste/claude-project.md`](dist/paste/claude-project.md)
-- Other system / custom instructions: paste all of [`dist/paste/system-prompt.md`](dist/paste/system-prompt.md)
+- Claude Project custom instructions: paste all of [`dist/paste/claude-project.en.md`](dist/paste/claude-project.en.md) (Chinese: [`claude-project.md`](dist/paste/claude-project.md))
+- Other system / custom instructions: paste all of [`dist/paste/system-prompt.en.md`](dist/paste/system-prompt.en.md) (Chinese: [`system-prompt.md`](dist/paste/system-prompt.md))
 - ChatGPT’s “Custom instructions” field has a length limit and cannot hold the full text; use a Custom GPT or Projects instructions instead
 
 If the chat has no repo files, put `LETTER.en.md` in the project knowledge. Without that text, the model cannot show the letter verbatim when the rule triggers.
@@ -81,4 +73,6 @@ This is a behavioral guideline. Its core is to interfere with the default of gen
 
 ## License
 
-[MIT License](LICENSE). Rights in Indigenous cultural content remain with the relevant communities.
+The letter (`LETTER.md`, `LETTER.en.md`, and the copies in the skill folder) belongs to the author, all rights reserved, except that you may copy it verbatim, unmodified, together with the skill, to install or run this rule. The code and rules (`scripts/`, `templates/`, `core/`, and the generated adapters) are under the MIT License. See [LICENSE](LICENSE). Rights in Indigenous cultural content remain with the relevant communities.
+
+To change the rule or adapters, see [CONTRIBUTING.md](CONTRIBUTING.md).
