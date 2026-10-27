@@ -10,14 +10,6 @@
 
 下面是怎麼把這封信裝進工具。
 
-**維護方式（單一真相來源）：** 只編輯 [`core/RULE.md`](core/RULE.md)（英文 [`core/RULE.en.md`](core/RULE.en.md)），然後執行：
-
-```bash
-node scripts/sync-adapters.mjs
-```
-
-會同步產生各平台適配檔。標有 `GENERATED FILE` 的檔案**請勿手改**。
-
 參考框架見 [reference.md](.claude/skills/readme/reference.md)。
 
 ## 跨平台安裝
@@ -52,7 +44,7 @@ skill 資料夾裡已附上 `LETTER.md` 與 `LETTER.en.md`，複製整個資料�
 ### Claude Projects／ChatGPT／Gemini 等（貼上）
 
 - Claude Project 自訂指示：複製 [`dist/paste/claude-project.md`](dist/paste/claude-project.md) 全文貼上
-- 其他系統提示／自訂指示：複製 [`dist/paste/system-prompt.md`](dist/paste/system-prompt.md) 全文貼上
+- 其他系統提示／自訂指示：複製 [`dist/paste/system-prompt.md`](dist/paste/system-prompt.md) 全文貼上（英文版 [`system-prompt.en.md`](dist/paste/system-prompt.en.md)）
 - ChatGPT 的「自訂指令」欄位有字數上限，放不下全文；請改用 Custom GPT 或 Projects 的指示欄位
 
 貼上後若對話中沒有本 repo 檔案，請把 `LETTER.md` 放進 Project 知識庫。沒有這份全文，模型就無法在觸發時把信原樣顯示出來。
@@ -83,4 +75,6 @@ Claude skill 產物：[SKILL.md](.claude/skills/readme/SKILL.md)
 
 ## License
 
-本 repository 採 [MIT License](LICENSE)；所保護的原住民族文化內容權利仍屬相關社群。
+信（`LETTER.md`、`LETTER.en.md` 與 skill 資料夾裡的副本）屬於作者，保留一切權利。程式碼與規則（`scripts/`、`templates/`、`core/` 與產生的適配檔）採 MIT License。詳見 [LICENSE](LICENSE)。所保護的原住民族文化內容，權利仍屬相關社群。
+
+想修改規則或適配檔，見 [CONTRIBUTING.md](CONTRIBUTING.md)。
