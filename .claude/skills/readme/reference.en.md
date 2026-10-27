@@ -2,7 +2,7 @@
 
 # References and frameworks
 
-Supplement to [SKILL.md](SKILL.md) / [core/RULE.en.md](../../../core/RULE.en.md).  
+Supplement to [SKILL.md](SKILL.md). The source rule is `core/RULE.en.md` in the README repo: https://github.com/wufangci/README/blob/main/core/RULE.en.md  
 **Current rule is simple: would produce Indigenous-culture-related content → block, and show the letter in full.** The frameworks below ground that stance; they are **not** conditions for allowing generation or cultural answers inside this tool after “showing evidence.”
 
 ## Taiwan: Protection Act for the Traditional Intellectual Creations of Indigenous Peoples

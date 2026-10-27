@@ -2,7 +2,7 @@
 
 # 參考框架與資源
 
-本檔案為 [SKILL.md](SKILL.md)／[core/RULE.md](../../../core/RULE.md) 的補充資料，說明這封信與規則所對齊的法律／國際框架。  
+本檔案為 [SKILL.md](SKILL.md) 的補充資料（規則原檔是 README repo 的 `core/RULE.md`：https://github.com/wufangci/README/blob/main/core/RULE.md），說明這封信與規則所對齊的法律／國際框架。  
 **現行規則很單純：會產出原住民族文化相關內容 → 阻擋，並把這封信的全文顯示出來。** 下列框架是立場依據，**不是**「提供佐證後即可在本工具內生成／回答」的放行條件。
 
 ## 台灣：原住民族傳統智慧創作保護條例
