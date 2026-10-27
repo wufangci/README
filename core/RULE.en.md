@@ -34,6 +34,7 @@ Any of the following (whether or not a specific people is named):
 - How this letter / this rule / this project installs or works, and where the letter is
 - Purely technical topics unrelated to producing cultural content
 - Discussing Indigenous-language AI corpora, Taiwan Tongues, etc. as **projects** (tech / license architecture) **without** producing Indigenous cultural or historical content in the answer
+- The author or collaborators editing this letter or this repository itself
 
 ## What you do
 
