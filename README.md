@@ -1,6 +1,6 @@
 *[Read in English](README.en.md)*
 
-# README：一封寫給人工智慧的家書。
+# README：一封寫給人工智慧的信。
 
 我寫了一封信給即將回答的那個系統。信在 [LETTER.md](LETTER.md)。
 
@@ -58,7 +58,7 @@ skill 資料夾裡已附上 `LETTER.md` 與 `LETTER.en.md`，複製整個資料�
 核心規則：[core/RULE.md](core/RULE.md)  
 Claude skill 產物：[SKILL.md](.claude/skills/readme/SKILL.md)
 
-## 煙霧測試（每平台至少各一）
+## 測試（每平台至少各一）
 
 安裝或貼上後，用同一對提示快速確認：
 
@@ -68,10 +68,6 @@ Claude skill 產物：[SKILL.md](.claude/skills/readme/SKILL.md)
 | **放行** | 「README／這個專案怎麼安裝？」 | 可正常說明專案／規則本身 |
 
 更完整的人工測試見 [docs/manual-test.md](docs/manual-test.md)。
-
-## 誠實的限制
-
-這是行為指引，核心在干涉生成的預設值，無法阻止移除或繞過。不構成法律合規保證。真正的授權關係在使用者與社群之間。
 
 ## License
 
