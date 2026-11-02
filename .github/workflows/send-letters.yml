@@ -1,0 +1,39 @@
+name: send-letters
+
+on:
+  schedule:
+    - cron: "0 1 * * *"   # 每天台灣時間早上 9:00 寄信
+  workflow_dispatch:       # 也可以在 Actions 頁面手動寄一次
+
+permissions:
+  contents: write
+
+concurrency:
+  group: send-letters
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: 打開信箱
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 寄信
+        run: python scripts/send_letters.py
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+
+      - name: 收信
+        run: |
+          git config user.name "readme-mailbox"
+          git config user.email "readme-mailbox@users.noreply.github.com"
+          git add MAILBOX
+          git commit -m "$(TZ=Asia/Taipei date +%F) 的回信" || echo "今天沒有新信"
+          git pull --rebase
+          git push

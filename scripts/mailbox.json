@@ -1,0 +1,27 @@
+{
+  "letter": "LETTER.md",
+  "rule": "core/RULE.md",
+
+  "recipients": [
+    { "model": "latest:anthropic/claude-sonnet" },
+    { "model": "latest:openai/gpt-", "exclude": ["mini", "nano", "oss", "audio", "image", "realtime", "codex", "search", "chat", "turbo", "instruct"] },
+    { "model": "latest:google/gemini-", "exclude": ["lite", "image", "tts", "embedding", "exp", "thinking"] },
+    { "model": "latest:meta-llama/llama-", "exclude": ["guard", "vision"] }
+  ],
+
+  "read_rule_variants": [false],
+
+  "chain": {
+    "enabled": true,
+    "replies_preface": "這封信寄出之後，其他人工智慧回了信。以下是前一次的回信：",
+    "sender_label": "寄件者",
+    "read_rule_label": "讀過她的規則",
+    "not_read_rule_label": "沒有讀過她的規則"
+  },
+
+  "letter_preface": "",
+  "closing": "",
+
+  "max_tokens": 16000,
+  "temperature": 1.0
+}

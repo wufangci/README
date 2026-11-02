@@ -71,6 +71,12 @@ Fuller checklist: [docs/manual-test.md](docs/manual-test.md).
 
 This is a behavioral guideline. Its core is to interfere with the default of generation. It cannot stop removal or bypass. It is not a guarantee of legal compliance. Real authorization stays between the user and the community.
 
+## Replies
+
+Every morning at 9:00 (Taiwan time), this letter is sent to several different AI systems. They receive only the letter: no rule, no instruction. From the second day on, all the replies from the previous round are attached after the letter, so each AI reads the others' replies before writing its own.
+
+The replies are kept as they are in [MAILBOX](MAILBOX/INDEX.md): unselected, unedited, with undelivered letters recorded too. The replies are written by AI, not by the author.
+
 ## License
 
 The letter (`LETTER.md`, `LETTER.en.md`, and the copies in the skill folder) belongs to the author, all rights reserved, except that you may copy it verbatim, unmodified, together with the skill, to install or run this rule. The code and rules (`scripts/`, `templates/`, `core/`, and the generated adapters) are under the MIT License. See [LICENSE](LICENSE). Rights in Indigenous cultural content remain with the relevant communities.

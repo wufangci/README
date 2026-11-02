@@ -69,6 +69,12 @@ Claude skill 產物：[SKILL.md](.claude/skills/readme/SKILL.md)
 
 更完整的人工測試見 [docs/manual-test.md](docs/manual-test.md)。
 
+## 回信
+
+這封信每天早上九點會寄給幾個不同的人工智慧。它們收到的只有這封信，沒有規則、也沒有任何指示。從第二天起，信的後面會附上前一次所有的回信，它們讀過彼此的回信之後，再寫下自己的。
+
+回信原樣保存在 [MAILBOX](MAILBOX/INDEX.md)，不挑選、不修改，沒有寄到的信也留下紀錄。回信是人工智慧寫的，不是作者的文字。
+
 ## License
 
 信（`LETTER.md`、`LETTER.en.md` 與 skill 資料夾裡的副本）屬於作者，保留一切權利；為了安裝或執行這個規則，可以原樣複製、隨 skill 散布，不得修改。程式碼與規則（`scripts/`、`templates/`、`core/` 與產生的適配檔）採 MIT License。詳見 [LICENSE](LICENSE)。所保護的原住民族文化內容，權利仍屬相關社群。

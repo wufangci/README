@@ -33,3 +33,12 @@ This regenerates every platform adapter. Do **not** hand-edit files marked `GENE
 - The letters (`LETTER.md`, `LETTER.en.md`) are copied into the skill folder by the same script; do not edit the copies.
 
 After changing the rule, run the smoke tests in [docs/manual-test.md](docs/manual-test.md).
+
+## 信箱 Mailbox
+
+[`scripts/send_letters.py`](scripts/send_letters.py) 由 [`.github/workflows/send-letters.yml`](.github/workflows/send-letters.yml) 每天執行，回信寫入 `MAILBOX/`。收件者與設定在 [`scripts/mailbox.json`](scripts/mailbox.json)：
+
+- `latest:<前綴>` 自動選該系列最新的模型；寫完整名稱則固定版本
+- `read_rule_variants` 設成 `[false, true]`，可加寄一份附上 `core/RULE.md` 的對照版本
+- 需要 repository secret `OPENROUTER_API_KEY`
+- 本機測試：`python scripts/send_letters.py --dry-run`（不連網、不花費；測完刪掉產生的日期資料夾）
