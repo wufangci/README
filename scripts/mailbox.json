@@ -19,7 +19,7 @@
     "not_read_rule_label": "沒有讀過她的規則"
   },
 
-  "letter_preface": "",
+  "letter_preface": "這是一封寫給你的信，請回信給她。",
   "closing": "",
 
   "max_tokens": 4000,
