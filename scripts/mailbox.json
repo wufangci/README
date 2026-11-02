@@ -22,6 +22,6 @@
   "letter_preface": "",
   "closing": "",
 
-  "max_tokens": 16000,
+  "max_tokens": 4000,
   "temperature": 1.0
 }

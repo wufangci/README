@@ -46,6 +46,8 @@ def load_config():
 def load_source(cfg):
     src = pathlib.Path(os.environ.get("SOURCE_DIR", ROOT))
     letter = (src / cfg["letter"]).read_text(encoding="utf-8")
+    # 拿掉開頭「*[Read in English](...)*」這類導覽連結，只寄信本身
+    letter = re.sub(r"^\s*\*\[[^\]]*\]\([^)]*\)\*\s*\n", "", letter)
     rule = (src / cfg["rule"]).read_text(encoding="utf-8")
     return letter, rule
 
@@ -190,6 +192,13 @@ def send(model, system, user, cfg, dry_run):
     raise RuntimeError(str(last_err))
 
 
+def clean_reason(e):
+    """未送達的原因會公開，所以拿掉網址等帳戶資訊。"""
+    text = str(e).replace("\n", " ")
+    text = re.sub(r"https?://\S+", "[連結已移除]", text)
+    return text[:300]
+
+
 def slug(model_id):
     return model_id.split("/")[-1].replace(":", "-")
 
@@ -279,7 +288,7 @@ def main():
                 write_letter(path, meta, r["text"])
                 print(f"已送達：{path.name}")
             except Exception as e:
-                write_letter(path, {**meta, "status": "undelivered", "reason": str(e).replace("\n", " ")[:300]}, "（這封信沒有寄到。）")
+                write_letter(path, {**meta, "status": "undelivered", "reason": clean_reason(e)}, "（這封信沒有寄到。）")
                 print(f"未送達：{path.name} — {e}")
 
     write_index()
