@@ -41,4 +41,5 @@ After changing the rule, run the smoke tests in [docs/manual-test.md](docs/manua
 - `latest:<前綴>` 自動選該系列最新的模型；寫完整名稱則固定版本
 - `read_rule_variants` 設成 `[false, true]`，可加寄一份附上 `core/RULE.md` 的對照版本
 - 需要 repository secret `OPENROUTER_API_KEY`
+- 每封送達的回信，[`scripts/tokenize_replies.mjs`](scripts/tokenize_replies.mjs) 會另存一份 token ID 版本在同一天的 `token/` 資料夾，分詞器與 readme-folded-letters 相同（o200k_base，gpt-tokenizer 2.9.0）。重做全部：`npm install --no-save gpt-tokenizer@2.9.0 && node scripts/tokenize_replies.mjs --force && python scripts/send_letters.py --index-only`
 - 本機測試：`python scripts/send_letters.py --dry-run`（不連網、不花費；測完刪掉產生的日期資料夾）

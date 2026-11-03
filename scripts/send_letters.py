@@ -8,6 +8,7 @@ README 信箱：把〈README：一封寫給人工智慧的家書〉寄給不同�
      （read_rule_variants 設成 [false, true] 時，每個收件者會各寄兩次：沒有讀過規則、讀過規則）
   4. 回信存成 MAILBOX/<日期>/<收件者>.md
   5. 更新 MAILBOX/INDEX.md
+  （token 版由 scripts/tokenize_replies.mjs 另外產生，之後再用 --index-only 更新索引）
 
 用法：
   python scripts/send_letters.py               # 正式寄信（需要 OPENROUTER_API_KEY）
@@ -221,14 +222,16 @@ def write_index():
                 f"| {'讀過' if meta.get('read_rule') == 'true' else '沒讀過'} "
                 f"| {'已送達' if delivered else '未送達'} "
                 f"| {len(body.strip()) if delivered else '—'} "
-                f"| [讀信]({d.name}/{f.name}) |"
+                f"| [文字]({d.name}/{f.name}) "
+                f"| {f'[token]({d.name}/token/{f.name})' if (d / 'token' / f.name).exists() else '—'} |"
             )
     total = sum(1 for r in rows if "已送達" in r)
     (MAILBOX / "INDEX.md").write_text(
         "# 信箱\n\n"
         f"至今共收到 {total} 封回信。\n\n"
-        "| 日期 | 寄件者 | 規則 | 狀態 | 字數 | |\n"
-        "|---|---|---|---|---|---|\n"
+        "每封回信有兩個版本：文字，以及用 o200k_base（GPT-4o）分詞器切成的 token ID。\n\n"
+        "| 日期 | 寄件者 | 規則 | 狀態 | 字數 | 文字 | token |\n"
+        "|---|---|---|---|---|---|---|\n"
         + "\n".join(rows) + "\n",
         encoding="utf-8",
     )
@@ -240,7 +243,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--date", default=dt.datetime.now(TAIPEI).date().isoformat())
+    ap.add_argument("--index-only", action="store_true", help="只重新產生 MAILBOX/INDEX.md")
     args = ap.parse_args()
+
+    if args.index_only:
+        write_index()
+        return
 
     if not args.dry_run and not os.environ.get("OPENROUTER_API_KEY"):
         sys.exit("缺少 OPENROUTER_API_KEY")

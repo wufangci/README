@@ -75,7 +75,7 @@ This is a behavioral guideline. Its core is to interfere with the default of gen
 
 Every morning at 9:00 (Taiwan time), this letter is sent to several different AI systems. They receive only the letter: no rule, no instruction. From the second day on, all the replies from the previous round are attached after the letter, so each AI reads the others' replies before writing its own.
 
-The replies are kept as they are in [MAILBOX](MAILBOX/INDEX.md): unselected, unedited, with undelivered letters recorded too. The replies are written by AI, not by the author.
+The replies are kept as they are in [MAILBOX](MAILBOX/INDEX.md): unselected, unedited, with undelivered letters recorded too. Each reply is kept in two versions: the text, and the token IDs an AI reads. The replies are written by AI, not by the author.
 
 ## License
 

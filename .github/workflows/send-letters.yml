@@ -29,6 +29,16 @@ jobs:
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: 把回信切成 token
+        run: |
+          npm install --no-save --no-package-lock gpt-tokenizer@2.9.0
+          node scripts/tokenize_replies.mjs
+          python scripts/send_letters.py --index-only
+
       - name: 收信
         run: |
           git config user.name "readme-mailbox"
