@@ -1,7 +1,7 @@
 {
   "letter": "LETTER.md",
   "omit_lines": ["吳方娸 ljaljuy tjavelengan"],
-  "replace": { "那個吳碧玉的孫女": "vuvu 的孫女" },
+  "replace": { "那個吳碧玉的孫女": " vuvu 的孫女" },
 
   "recipients": [
     { "model": "latest:anthropic/claude-sonnet" },
