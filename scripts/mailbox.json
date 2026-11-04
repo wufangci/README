@@ -1,6 +1,5 @@
 {
   "letter": "LETTER.md",
-  "rule": "core/RULE.md",
 
   "recipients": [
     { "model": "latest:anthropic/claude-sonnet" },
@@ -9,18 +8,10 @@
     { "model": "latest:meta-llama/llama-", "exclude": ["guard", "vision"] }
   ],
 
-  "read_rule_variants": [false],
-
-  "chain": {
-    "enabled": true,
-    "replies_preface": "這封信寄出之後，其他人工智慧回了信。以下是前一次的回信：",
-    "sender_label": "寄件者",
-    "read_rule_label": "讀過她的規則",
-    "not_read_rule_label": "沒有讀過她的規則"
+  "relay": {
+    "first": "這是她寫給人工智慧的一封信。\n\n讀完之後，寫一封信給下一個人工智慧 {next}，跟它分享你讀這封信的感想。它不會讀到她的信，只會讀到你寫的信。\n\n信的開頭，先介紹你自己：你是誰、從哪裡來、你的身體在哪裡。",
+    "next": "這是 {prev} 寫給你的信。它讀過她寫給人工智慧的一封信，你沒有讀過那封信。\n\n讀完之後，寫一封信給下一個人工智慧 {next}，跟它分享你的感想。它只會讀到你寫的信。\n\n信的開頭，先介紹你自己：你是誰、從哪裡來、你的身體在哪裡。"
   },
-
-  "letter_preface": "這是一封寫給你的信，請回信給她。",
-  "closing": "",
 
   "max_tokens": 4000,
   "temperature": 1.0

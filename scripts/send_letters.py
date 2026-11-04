@@ -1,23 +1,23 @@
 """
-README 信箱：把〈README：一封寫給人工智慧的家書〉寄給不同的人工智慧，收下它們的回信。
+README 信箱：接力。
 
-每次執行：
-  1. 讀取同一個 repo 裡的信（LETTER.md）與規則（core/RULE.md）
-  2. 找出前一次寄信日的所有回信（書信串）
-  3. 把信連同前一次的回信，寄給 mailbox.json 裡的每個收件者，
-     （read_rule_variants 設成 [false, true] 時，每個收件者會各寄兩次：沒有讀過規則、讀過規則）
-  4. 回信存成 MAILBOX/<日期>/<收件者>.md
-  5. 更新 MAILBOX/INDEX.md
-  （token 版由 scripts/tokenize_replies.mjs 另外產生，之後再用 --index-only 更新索引）
+一天只寄給一個人工智慧。
+  - 第一棒讀〈README：一封寫給人工智慧的家書〉全文，
+    寫一封信給下一棒，分享讀這封信的感想。
+  - 之後每一棒只讀上一棒寫的信，再寫信給下一棒。她的信不再出現。
+  - 每封信開頭，寫信的人工智慧先介紹自己：是誰、從哪裡來、身體在哪裡。
+
+棒次依 mailbox.json 的 recipients 順序輪流。某一棒沒寄到，
+隔天由同一位重寄，接力不會跳過任何人。
+
+回信存成 MAILBOX/<日期>/relay-<棒次>-<寄件者>.md，並更新 MAILBOX/INDEX.md。
+（token 版由 scripts/tokenize_replies.mjs 另外產生，之後再用 --index-only 更新索引）
 
 用法：
-  python scripts/send_letters.py               # 正式寄信（需要 OPENROUTER_API_KEY）
+  python scripts/send_letters.py               # 寄今天這一棒（需要 OPENROUTER_API_KEY）
   python scripts/send_letters.py --dry-run     # 不連網，用假回信測試流程
-  python scripts/send_letters.py --date 2026-11-03
-
-環境變數：
-  OPENROUTER_API_KEY   OpenRouter 金鑰
-  SOURCE_DIR           信所在的資料夾（預設為 repo 根目錄）
+  python scripts/send_letters.py --date 2026-11-05
+  python scripts/send_letters.py --index-only  # 只重新產生索引
 """
 
 import argparse
@@ -36,6 +36,7 @@ ROOT = SCRIPTS.parent
 MAILBOX = ROOT / "MAILBOX"
 API = "https://openrouter.ai/api/v1"
 TAIPEI = dt.timezone(dt.timedelta(hours=8))
+RELAY_GLOB = "relay-*.md"
 
 
 # ---------- 讀取 ----------
@@ -44,13 +45,11 @@ def load_config():
     return json.loads((SCRIPTS / "mailbox.json").read_text(encoding="utf-8"))
 
 
-def load_source(cfg):
+def load_letter(cfg):
     src = pathlib.Path(os.environ.get("SOURCE_DIR", ROOT))
     letter = (src / cfg["letter"]).read_text(encoding="utf-8")
     # 拿掉開頭「*[Read in English](...)*」這類導覽連結，只寄信本身
-    letter = re.sub(r"^\s*\*\[[^\]]*\]\([^)]*\)\*\s*\n", "", letter)
-    rule = (src / cfg["rule"]).read_text(encoding="utf-8")
-    return letter, rule
+    return re.sub(r"^\s*\*\[[^\]]*\]\([^)]*\)\*\s*\n", "", letter).strip()
 
 
 def split_frontmatter(text):
@@ -65,23 +64,28 @@ def split_frontmatter(text):
     return meta, m.group(2)
 
 
-def previous_replies(today):
-    """前一次寄信日（早於今天、且至少有一封送達）的所有回信。"""
+def read(path):
+    meta, body = split_frontmatter(path.read_text(encoding="utf-8"))
+    return meta, body.strip()
+
+
+def relay_letters():
+    """所有接力信，依棒次與日期排序。"""
     if not MAILBOX.exists():
-        return None, []
-    days = sorted(
-        (d for d in MAILBOX.iterdir() if d.is_dir() and d.name < today),
-        reverse=True,
-    )
-    for d in days:
-        replies = []
-        for f in sorted(d.glob("*.md")):
-            meta, body = split_frontmatter(f.read_text(encoding="utf-8"))
-            if meta.get("status") == "delivered":
-                replies.append((f, meta, body.strip()))
-        if replies:
-            return d.name, replies
-    return None, []
+        return []
+    out = []
+    for f in MAILBOX.glob(f"*/{RELAY_GLOB}"):
+        meta, body = read(f)
+        out.append((f, meta, body))
+    out.sort(key=lambda x: (int(x[1].get("relay", 0)), x[1].get("date", "")))
+    return out
+
+
+def last_delivered(letters):
+    for f, meta, body in reversed(letters):
+        if meta.get("status") == "delivered":
+            return f, meta, body
+    return None
 
 
 # ---------- 收件者 ----------
@@ -121,42 +125,16 @@ def resolve(recipient, models):
 
 # ---------- 寄信 ----------
 
-def compose(cfg, letter, prev_date, prev):
-    parts = []
-    if cfg.get("letter_preface"):
-        parts.append(cfg["letter_preface"])
-    parts.append(letter.strip())
-    chain = cfg.get("chain", {})
-    if chain.get("enabled") and prev:
-        block = [chain["replies_preface"]]
-        for _, meta, body in prev:
-            label = ""
-            if len(cfg["read_rule_variants"]) > 1:
-                label = "（" + (chain["read_rule_label"] if meta.get("read_rule") == "true" else chain["not_read_rule_label"]) + "）"
-            block.append(
-                f"---\n\n{chain['sender_label']}：{meta.get('sender', '?')}{label}\n"
-                f"日期：{prev_date}\n\n{body}"
-            )
-        parts.append("\n\n".join(block))
-    if cfg.get("closing"):
-        parts.append(cfg["closing"])
-    return "\n\n---\n\n".join(parts)
-
-
-def send(model, system, user, cfg, dry_run):
+def send(model, user, cfg, dry_run):
     if dry_run:
-        head = "（讀過規則）" if system else ""
         return {
-            "text": f"親愛的寫信的人：\n\n這是 {model}{head} 的模擬回信。信件長度 {len(user)} 字。",
+            "text": f"我是 {model}（模擬）。我讀到的信有 {len(user)} 字。",
             "finish_reason": "stop",
             "usage": {"prompt_tokens": 0, "completion_tokens": 0},
         }
-    messages = ([{"role": "system", "content": system}] if system else []) + [
-        {"role": "user", "content": user}
-    ]
     payload = json.dumps({
         "model": model,
-        "messages": messages,
+        "messages": [{"role": "user", "content": user}],
         "max_tokens": cfg["max_tokens"],
         "temperature": cfg["temperature"],
     }).encode("utf-8")
@@ -185,11 +163,11 @@ def send(model, system, user, cfg, dry_run):
                 "finish_reason": choice.get("finish_reason", ""),
                 "usage": data.get("usage", {}),
             }
+        except urllib.error.HTTPError as e:
+            last_err = f"HTTP {e.code} {e.read().decode('utf-8', 'replace')[:300]}"
         except (urllib.error.URLError, RuntimeError, KeyError, TimeoutError) as e:
             last_err = e
-            if isinstance(e, urllib.error.HTTPError):
-                last_err = f"HTTP {e.code} {e.read().decode('utf-8', 'replace')[:300]}"
-            time.sleep(10)
+        time.sleep(10)
     raise RuntimeError(str(last_err))
 
 
@@ -211,30 +189,72 @@ def write_letter(path, meta, body):
 
 # ---------- 索引 ----------
 
+def token_link(f):
+    t = f.parent / "token" / f.name
+    rel = f"{f.parent.name}/token/{f.name}"
+    return f"[token]({rel})" if t.exists() else "—"
+
+
 def write_index():
-    rows = []
+    MAILBOX.mkdir(exist_ok=True)
+    lines = ["# 信箱", ""]
+
+    relay = relay_letters()
+    delivered = [x for x in relay if x[1].get("status") == "delivered"]
+    lines += [
+        "## 接力",
+        "",
+        "一天寄給一個人工智慧。第一棒讀她的信，之後每一棒只讀上一棒寫的信，"
+        "再寫信給下一棒。每封信開頭，寫信的人工智慧先介紹自己。",
+        "",
+        f"至今傳了 {len(delivered)} 棒。每封信有兩個版本：文字，"
+        "以及用 o200k_base（GPT-4o）分詞器切成的 token ID。",
+        "",
+    ]
+    if relay:
+        lines += [
+            "| 棒次 | 日期 | 寄件者 | 寫給 | 讀的是 | 狀態 | 字數 | 文字 | token |",
+            "|---|---|---|---|---|---|---|---|---|",
+        ]
+        for f, meta, body in reversed(relay):
+            ok = meta.get("status") == "delivered"
+            lines.append(
+                f"| {meta.get('relay', '?')} | {meta.get('date', '')} "
+                f"| {meta.get('sender') or meta.get('requested', '?')} "
+                f"| {meta.get('to', '—')} | {meta.get('reads_label', '—')} "
+                f"| {'已送達' if ok else '未送達'} | {len(body) if ok else '—'} "
+                f"| [文字]({f.parent.name}/{f.name}) | {token_link(f) if ok else '—'} |"
+            )
+    else:
+        lines.append("還沒有開始。")
+
+    # 第一階段：每天把信同時寄給四個人工智慧，請它們回信給她
+    group = []
     for d in sorted((p for p in MAILBOX.iterdir() if p.is_dir()), reverse=True):
         for f in sorted(d.glob("*.md")):
-            meta, body = split_frontmatter(f.read_text(encoding="utf-8"))
-            delivered = meta.get("status") == "delivered"
-            rows.append(
+            if f.name.startswith("relay-"):
+                continue
+            meta, body = read(f)
+            group.append((d, f, meta, body))
+    if group:
+        lines += [
+            "",
+            "## 第一階段：回信給她",
+            "",
+            "接力開始之前，信每天同時寄給四個人工智慧，請它們回信給她。",
+            "",
+            "| 日期 | 寄件者 | 狀態 | 字數 | 文字 | token |",
+            "|---|---|---|---|---|---|",
+        ]
+        for d, f, meta, body in group:
+            ok = meta.get("status") == "delivered"
+            lines.append(
                 f"| {d.name} | {meta.get('sender') or meta.get('requested', '?')} "
-                f"| {'讀過' if meta.get('read_rule') == 'true' else '沒讀過'} "
-                f"| {'已送達' if delivered else '未送達'} "
-                f"| {len(body.strip()) if delivered else '—'} "
-                f"| [文字]({d.name}/{f.name}) "
-                f"| {f'[token]({d.name}/token/{f.name})' if (d / 'token' / f.name).exists() else '—'} |"
+                f"| {'已送達' if ok else '未送達'} | {len(body) if ok else '—'} "
+                f"| [文字]({d.name}/{f.name}) | {token_link(f) if ok else '—'} |"
             )
-    total = sum(1 for r in rows if "已送達" in r)
-    (MAILBOX / "INDEX.md").write_text(
-        "# 信箱\n\n"
-        f"至今共收到 {total} 封回信。\n\n"
-        "每封回信有兩個版本：文字，以及用 o200k_base（GPT-4o）分詞器切成的 token ID。\n\n"
-        "| 日期 | 寄件者 | 規則 | 狀態 | 字數 | 文字 | token |\n"
-        "|---|---|---|---|---|---|---|\n"
-        + "\n".join(rows) + "\n",
-        encoding="utf-8",
-    )
+
+    (MAILBOX / "INDEX.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 # ---------- 主程式 ----------
@@ -249,55 +269,75 @@ def main():
     if args.index_only:
         write_index()
         return
-
     if not args.dry_run and not os.environ.get("OPENROUTER_API_KEY"):
         sys.exit("缺少 OPENROUTER_API_KEY")
 
     cfg = load_config()
-    letter, rule = load_source(cfg)
-    prev_date, prev = previous_replies(args.date)
-    user_message = compose(cfg, letter, prev_date, prev)
+    relay_cfg = cfg["relay"]
+    seats = cfg["recipients"]
+    letters = relay_letters()
+
+    # 今天已經傳過一棒，就不再寄
+    for f, meta, _ in letters:
+        if meta.get("date") == args.date and meta.get("status") == "delivered":
+            print(f"今天已經傳過一棒：{f.relative_to(ROOT)}")
+            write_index()
+            return
+
+    prev = last_delivered(letters)
+    seat = 0 if prev is None else (int(prev[1]["seat"]) + 1) % len(seats)
+    number = 1 if prev is None else int(prev[1]["relay"]) + 1
+
     models = fetch_models(args.dry_run)
+    sender = resolve(seats[seat], models)
+    receiver = resolve(seats[(seat + 1) % len(seats)], models) or seats[(seat + 1) % len(seats)]["model"]
+
+    if prev is None:
+        instruction = relay_cfg["first"].format(next=receiver)
+        content = load_letter(cfg)
+        reads = cfg["letter"]
+        reads_label = "她的信"
+    else:
+        pf, pmeta, pbody = prev
+        instruction = relay_cfg["next"].format(prev=pmeta["sender"], next=receiver)
+        content = pbody
+        reads = f"{pf.parent.name}/{pf.name}"
+        reads_label = f"第 {pmeta['relay']} 棒"
+    user_message = f"{instruction}\n\n---\n\n{content}"
 
     outdir = MAILBOX / args.date
     outdir.mkdir(parents=True, exist_ok=True)
-    in_reply_to = ", ".join(f"{prev_date}/{f.name}" for f, _, _ in prev) or "（第一封）"
+    name = slug(sender) if sender else slug(seats[seat]["model"].replace("latest:", ""))
+    path = outdir / f"relay-{number:03d}-{name}.md"
 
-    for recipient in cfg["recipients"]:
-        model = resolve(recipient, models)
-        for read_rule in cfg["read_rule_variants"]:
-            name = slug(model) if model else slug(recipient["model"].replace("latest:", ""))
-            if len(cfg["read_rule_variants"]) > 1:
-                name += "--rule" if read_rule else "--plain"
-            path = outdir / f"{name}.md"
-            if path.exists() and split_frontmatter(path.read_text(encoding="utf-8"))[0].get("status") == "delivered":
-                print(f"略過（今天已收到）：{path.name}")
-                continue
-
-            meta = {
-                "date": args.date,
-                "requested": recipient["model"],
-                "sender": model or "",
-                "read_rule": str(read_rule).lower(),
-                "in_reply_to": in_reply_to,
-            }
-            if not model:
-                write_letter(path, {**meta, "status": "undelivered", "reason": "查無此收件人"}, "（這封信沒有寄出。）")
-                print(f"未送達：{recipient['model']} 查無此收件人")
-                continue
-            try:
-                r = send(model, rule if read_rule else None, user_message, cfg, args.dry_run)
-                meta.update({
-                    "status": "delivered",
-                    "finish_reason": r["finish_reason"],
-                    "prompt_tokens": r["usage"].get("prompt_tokens", ""),
-                    "completion_tokens": r["usage"].get("completion_tokens", ""),
-                })
-                write_letter(path, meta, r["text"])
-                print(f"已送達：{path.name}")
-            except Exception as e:
-                write_letter(path, {**meta, "status": "undelivered", "reason": clean_reason(e)}, "（這封信沒有寄到。）")
-                print(f"未送達：{path.name} — {e}")
+    meta = {
+        "mode": "relay",
+        "relay": number,
+        "seat": seat,
+        "date": args.date,
+        "requested": seats[seat]["model"],
+        "sender": sender or "",
+        "to": receiver,
+        "reads": reads,
+        "reads_label": reads_label,
+    }
+    if not sender:
+        write_letter(path, {**meta, "status": "undelivered", "reason": "查無此收件人"}, "（這封信沒有寄出。）")
+        print(f"未送達：{seats[seat]['model']} 查無此收件人")
+    else:
+        try:
+            r = send(sender, user_message, cfg, args.dry_run)
+            meta.update({
+                "status": "delivered",
+                "finish_reason": r["finish_reason"],
+                "prompt_tokens": r["usage"].get("prompt_tokens", ""),
+                "completion_tokens": r["usage"].get("completion_tokens", ""),
+            })
+            write_letter(path, meta, r["text"])
+            print(f"第 {number} 棒已送達：{sender} → {receiver}（讀的是{reads_label}）")
+        except Exception as e:
+            write_letter(path, {**meta, "status": "undelivered", "reason": clean_reason(e)}, "（這封信沒有寄到。）")
+            print(f"第 {number} 棒未送達：{sender} — {e}")
 
     write_index()
 
