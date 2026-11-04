@@ -1,16 +1,18 @@
 """
 README 信箱：接力。
 
-一天只寄給一個人工智慧。
+一天只寄給一個人工智慧。接力分成好幾輪，每一輪四棒：
   - 第一棒讀〈README：一封寫給人工智慧的家書〉全文，
     寫一封信給下一棒，分享讀這封信的感想。
   - 之後每一棒只讀上一棒寫的信，再寫信給下一棒。她的信不再出現。
+  - 最後一棒讀完上一棒的信，寫下感想，不再交給誰。
   - 每封信開頭，寫信的人工智慧先介紹自己：是誰、從哪裡來、身體在哪裡。
 
-棒次依 mailbox.json 的 recipients 順序輪流。某一棒沒寄到，
-隔天由同一位重寄，接力不會跳過任何人。
+每一輪的棒次寫在 mailbox.json 的 rounds。預設四輪是平衡排法：
+每個人工智慧在第 1、2、3、4 棒各坐一次，也剛好讀過其他三個人工智慧的信各一次。
+某一棒沒寄到，隔天由同一位重寄。全部輪次跑完就停止寄信。
 
-回信存成 MAILBOX/<日期>/relay-<棒次>-<寄件者>.md，並更新 MAILBOX/INDEX.md。
+回信存成 MAILBOX/<日期>/relay-r<輪>-<棒>-<寄件者>.md，並更新 MAILBOX/INDEX.md。
 （token 版由 scripts/tokenize_replies.mjs 另外產生，之後再用 --index-only 更新索引）
 
 用法：
@@ -84,7 +86,7 @@ def relay_letters():
     for f in MAILBOX.glob(f"*/{RELAY_GLOB}"):
         meta, body = read(f)
         out.append((f, meta, body))
-    out.sort(key=lambda x: (int(x[1].get("relay", 0)), x[1].get("date", "")))
+    out.sort(key=lambda x: (int(x[1].get("round", 0)), int(x[1].get("leg", 0)), x[1].get("date", "")))
     return out
 
 
@@ -211,8 +213,9 @@ def write_index():
     lines += [
         "## 接力",
         "",
-        "一天寄給一個人工智慧。第一棒讀她的信，之後每一棒只讀上一棒寫的信，"
-        "再寫信給下一棒。每封信開頭，寫信的人工智慧先介紹自己。",
+        "一天寄給一個人工智慧。每一輪四棒：第一棒讀她的信，之後每一棒只讀上一棒寫的信，"
+        "再寫信給下一棒。每封信開頭，寫信的人工智慧先介紹自己。"
+        "四輪裡，每個人工智慧在每個位置各坐一次，也讀過其他三個人工智慧的信各一次。",
         "",
         f"至今傳了 {len(delivered)} 棒。每封信有兩個版本：文字，"
         "以及用 o200k_base（GPT-4o）分詞器切成的 token ID。",
@@ -220,13 +223,13 @@ def write_index():
     ]
     if relay:
         lines += [
-            "| 棒次 | 日期 | 寄件者 | 寫給 | 讀的是 | 狀態 | 字數 | 文字 | token |",
-            "|---|---|---|---|---|---|---|---|---|",
+            "| 輪 | 棒 | 日期 | 寄件者 | 寫給 | 讀的是 | 狀態 | 字數 | 文字 | token |",
+            "|---|---|---|---|---|---|---|---|---|---|",
         ]
         for f, meta, body in reversed(relay):
             ok = meta.get("status") == "delivered"
             lines.append(
-                f"| {meta.get('relay', '?')} | {meta.get('date', '')} "
+                f"| {meta.get('round', '?')} | {meta.get('leg', '?')} | {meta.get('date', '')} "
                 f"| {meta.get('sender') or meta.get('requested', '?')} "
                 f"| {meta.get('to', '—')} | {meta.get('reads_label', '—')} "
                 f"| {'已送達' if ok else '未送達'} | {len(body) if ok else '—'} "
@@ -282,6 +285,7 @@ def main():
     cfg = load_config()
     relay_cfg = cfg["relay"]
     seats = cfg["recipients"]
+    rounds = cfg["rounds"]
     letters = relay_letters()
 
     # 今天已經傳過一棒，就不再寄
@@ -291,40 +295,53 @@ def main():
             write_index()
             return
 
+    # 下一棒：接在最後一封送達的信後面
     prev = last_delivered(letters)
-    seat = 0 if prev is None else (int(prev[1]["seat"]) + 1) % len(seats)
-    number = 1 if prev is None else int(prev[1]["relay"]) + 1
-
-    models = fetch_models(args.dry_run)
-    sender = resolve(seats[seat], models)
-    receiver = resolve(seats[(seat + 1) % len(seats)], models) or seats[(seat + 1) % len(seats)]["model"]
-
     if prev is None:
+        rnd, leg = 1, 1
+    else:
+        rnd, leg = int(prev[1]["round"]), int(prev[1]["leg"]) + 1
+        if leg > len(rounds[rnd - 1]):
+            rnd, leg = rnd + 1, 1
+    if rnd > len(rounds):
+        print(f"{len(rounds)} 輪都已經跑完，不再寄信。要再開始，在 mailbox.json 的 rounds 加上新的輪次。")
+        write_index()
+        return
+
+    order = rounds[rnd - 1]
+    models = fetch_models(args.dry_run)
+    seat = order[leg - 1]
+    sender = resolve(seats[seat], models)
+    last_leg = leg == len(order)
+    receiver = None if last_leg else (resolve(seats[order[leg]], models) or seats[order[leg]]["model"])
+
+    if leg == 1:
         instruction = relay_cfg["first"].format(next=receiver)
         content = load_letter(cfg)
         reads = cfg["letter"]
         reads_label = "她的信"
     else:
         pf, pmeta, pbody = prev
-        instruction = relay_cfg["next"].format(prev=pmeta["sender"], next=receiver)
+        template = relay_cfg["last"] if last_leg else relay_cfg["next"]
+        instruction = template.format(prev=pmeta["sender"], next=receiver)
         content = pbody
         reads = f"{pf.parent.name}/{pf.name}"
-        reads_label = f"第 {pmeta['relay']} 棒"
+        reads_label = f"第 {rnd} 輪第 {leg - 1} 棒"
     user_message = f"{instruction}\n\n---\n\n{content}"
 
     outdir = MAILBOX / args.date
     outdir.mkdir(parents=True, exist_ok=True)
     name = slug(sender) if sender else slug(seats[seat]["model"].replace("latest:", ""))
-    path = outdir / f"relay-{number:03d}-{name}.md"
+    path = outdir / f"relay-r{rnd}-{leg}-{name}.md"
 
     meta = {
         "mode": "relay",
-        "relay": number,
-        "seat": seat,
+        "round": rnd,
+        "leg": leg,
         "date": args.date,
         "requested": seats[seat]["model"],
         "sender": sender or "",
-        "to": receiver,
+        "to": receiver or "—（這一輪的最後一棒）",
         "reads": reads,
         "reads_label": reads_label,
     }
@@ -341,10 +358,10 @@ def main():
                 "completion_tokens": r["usage"].get("completion_tokens", ""),
             })
             write_letter(path, meta, r["text"])
-            print(f"第 {number} 棒已送達：{sender} → {receiver}（讀的是{reads_label}）")
+            print(f"第 {rnd} 輪第 {leg} 棒已送達：{sender} → {receiver or '（最後一棒）'}（讀的是{reads_label}）")
         except Exception as e:
             write_letter(path, {**meta, "status": "undelivered", "reason": clean_reason(e)}, "（這封信沒有寄到。）")
-            print(f"第 {number} 棒未送達：{sender} — {e}")
+            print(f"第 {rnd} 輪第 {leg} 棒未送達：{sender} — {e}")
 
     write_index()
 

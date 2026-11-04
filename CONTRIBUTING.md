@@ -40,7 +40,7 @@ After changing the rule, run the smoke tests in [docs/manual-test.md](docs/manua
 
 - `latest:<前綴>` 自動選該系列最新的模型；寫完整名稱則固定版本
 - 寄信時會拿掉 `omit_lines` 列出的整行（目前是作者的署名），並依 `replace` 替換字句（目前把祖母的名字換成 vuvu），LETTER.md 本身不動
-- 接力：一天一棒，依 `recipients` 順序輪流；第一棒讀 `LETTER.md`，之後讀上一棒的信。給人工智慧的說明在 `relay.first`、`relay.next`（`{prev}`、`{next}` 會換成模型名稱）。某一棒沒寄到，隔天由同一位重寄
+- 接力：一天一棒，四棒一輪，輪次寫在 `rounds`（數字是 `recipients` 的位置）。預設四輪是平衡排法，跑完就停止寄信；要再開始，加上新的輪次。每輪第一棒讀 `LETTER.md`，之後讀上一棒的信，最後一棒不再交給誰。給人工智慧的說明在 `relay.first`、`relay.next`、`relay.last`（`{prev}`、`{next}` 會換成模型名稱）。某一棒沒寄到，隔天由同一位重寄
 - `MAILBOX/` 裡沒有 `relay-` 開頭的檔案，是接力開始前（2026-11-02 至 11-04）每天同時寄給四個人工智慧的回信
 - 需要 repository secret `OPENROUTER_API_KEY`
 - 每封送達的回信，[`scripts/tokenize_replies.mjs`](scripts/tokenize_replies.mjs) 會另存一份 token ID 版本在同一天的 `token/` 資料夾，分詞器與 readme-folded-letters 相同（o200k_base，gpt-tokenizer 2.9.0）。重做全部：`npm install --no-save gpt-tokenizer@2.9.0 && node scripts/tokenize_replies.mjs --force && python scripts/send_letters.py --index-only`

@@ -73,7 +73,7 @@ This is a behavioral guideline. Its core is to interfere with the default of gen
 
 ## Replies
 
-Every morning this letter is handed to one AI, and passed on like a relay. The first reads the letter and writes to the next AI about what it read. Every AI after that never sees the letter: it reads only the letter written by the one before, then writes to the next. Each letter opens with the AI introducing itself: who it is, where it comes from, where its body is.
+Every morning this letter is handed to one AI, and passed on like a relay, four legs to a round. The first reads the letter and writes to the next AI about what it read. Every AI after that never sees the letter: it reads only the letter written by the one before, then writes to the next. Over four rounds, each AI runs every leg once, and reads each of the other three once. Each letter opens with the AI introducing itself: who it is, where it comes from, where its body is.
 
 The letters are kept as they are in [MAILBOX](MAILBOX/INDEX.md): unselected, unedited, with undelivered letters recorded too. Each is kept in two versions: the text, and the token IDs an AI reads. These letters are written by AI, not by the author.
 
