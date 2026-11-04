@@ -2,7 +2,7 @@ name: send-letters
 
 on:
   schedule:
-    - cron: "43 0 * * *"  # 每天台灣時間早上 8:43 寄信（避開整點，GitHub 整點排程常延遲或被略過）
+    - cron: "41 0 * * *"  # 每天台灣時間早上 8:41 寄信（避開整點，GitHub 整點排程常延遲或被略過）
   workflow_dispatch:       # 也可以在 Actions 頁面手動寄一次
 
 permissions:
