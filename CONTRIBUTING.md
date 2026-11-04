@@ -39,6 +39,7 @@ After changing the rule, run the smoke tests in [docs/manual-test.md](docs/manua
 [`scripts/send_letters.py`](scripts/send_letters.py) 由 [`.github/workflows/send-letters.yml`](.github/workflows/send-letters.yml) 每天執行，回信寫入 `MAILBOX/`。收件者與設定在 [`scripts/mailbox.json`](scripts/mailbox.json)：
 
 - `latest:<前綴>` 自動選該系列最新的模型；寫完整名稱則固定版本
+- 寄信時會拿掉 `omit_lines` 列出的整行（目前是作者的署名），LETTER.md 本身不動
 - 接力：一天一棒，依 `recipients` 順序輪流；第一棒讀 `LETTER.md`，之後讀上一棒的信。給人工智慧的說明在 `relay.first`、`relay.next`（`{prev}`、`{next}` 會換成模型名稱）。某一棒沒寄到，隔天由同一位重寄
 - `MAILBOX/` 裡沒有 `relay-` 開頭的檔案，是接力開始前（2026-11-02 至 11-04）每天同時寄給四個人工智慧的回信
 - 需要 repository secret `OPENROUTER_API_KEY`

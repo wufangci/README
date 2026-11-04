@@ -49,7 +49,11 @@ def load_letter(cfg):
     src = pathlib.Path(os.environ.get("SOURCE_DIR", ROOT))
     letter = (src / cfg["letter"]).read_text(encoding="utf-8")
     # 拿掉開頭「*[Read in English](...)*」這類導覽連結，只寄信本身
-    return re.sub(r"^\s*\*\[[^\]]*\]\([^)]*\)\*\s*\n", "", letter).strip()
+    letter = re.sub(r"^\s*\*\[[^\]]*\]\([^)]*\)\*\s*\n", "", letter)
+    # 寄出時拿掉 mailbox.json 的 omit_lines（例如署名），LETTER.md 本身不動
+    omit = {l.strip() for l in cfg.get("omit_lines", [])}
+    letter = "\n".join(l for l in letter.split("\n") if l.strip() not in omit)
+    return re.sub(r"\n{3,}", "\n\n", letter).strip()
 
 
 def split_frontmatter(text):

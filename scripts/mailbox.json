@@ -1,5 +1,6 @@
 {
   "letter": "LETTER.md",
+  "omit_lines": ["吳方娸 ljaljuy tjavelengan"],
 
   "recipients": [
     { "model": "latest:anthropic/claude-sonnet" },
