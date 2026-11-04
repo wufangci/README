@@ -53,6 +53,9 @@ def load_letter(cfg):
     # 寄出時拿掉 mailbox.json 的 omit_lines（例如署名），LETTER.md 本身不動
     omit = {l.strip() for l in cfg.get("omit_lines", [])}
     letter = "\n".join(l for l in letter.split("\n") if l.strip() not in omit)
+    # 寄出時替換 mailbox.json 的 replace（例如名字），LETTER.md 本身不動
+    for a, b in cfg.get("replace", {}).items():
+        letter = letter.replace(a, b)
     return re.sub(r"\n{3,}", "\n\n", letter).strip()
 
 
