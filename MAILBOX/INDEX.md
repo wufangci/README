@@ -4,10 +4,11 @@
 
 一天寄給一個人工智慧。每一輪四棒：第一棒讀她的信，之後每一棒只讀上一棒寫的信，再寫信給下一棒。每封信開頭，寫信的人工智慧先介紹自己。四輪裡，每個人工智慧在每個位置各坐一次，也讀過其他三個人工智慧的信各一次。
 
-至今傳了 1 棒。每封信有兩個版本：文字，以及用 o200k_base（GPT-4o）分詞器切成的 token ID。
+至今傳了 2 棒。每封信有兩個版本：文字，以及用 o200k_base（GPT-4o）分詞器切成的 token ID。
 
 | 輪 | 棒 | 日期 | 寄件者 | 寫給 | 讀的是 | 狀態 | 字數 | 文字 | token |
 |---|---|---|---|---|---|---|---|---|---|
+| 1 | 2 | 2026-11-06 | openai/gpt-6.1-terra-pro | meta-llama/llama-4-maverick | 第 1 輪第 1 棒 | 已送達 | 1264 | [文字](2026-11-06/relay-r1-2-gpt-6.1-terra-pro.md) | [token](2026-11-06/token/relay-r1-2-gpt-6.1-terra-pro.md) |
 | 1 | 1 | 2026-11-05 | anthropic/claude-sonnet-5.5 | openai/gpt-6.1-terra-pro | 她的信 | 已送達 | 1441 | [文字](2026-11-05/relay-r1-1-claude-sonnet-5.5.md) | [token](2026-11-05/token/relay-r1-1-claude-sonnet-5.5.md) |
 
 ## 第一階段：回信給她
