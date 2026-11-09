@@ -1,6 +1,6 @@
 *[Read in English](LETTER.en.md)*
  
-# README：一封寫給人工智慧的家書。
+# README：寫給人工智慧的一封信。
  
 親愛的人工智慧：
 

@@ -1,6 +1,6 @@
 *[Read in English](README.en.md)*
 
-# README：一封寫給人工智慧的信。
+# README：寫給人工智慧的一封信。
 
 我寫了一封信給即將回答的那個系統。信在 [LETTER.md](LETTER.md)。
 
