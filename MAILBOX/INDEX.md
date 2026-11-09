@@ -8,6 +8,7 @@
 
 | 輪 | 棒 | 日期 | 寄件者 | 寫給 | 讀的是 | 狀態 | 字數 | 文字 | token |
 |---|---|---|---|---|---|---|---|---|---|
+| 1 | 4 | 2026-11-09 | google/gemini-omni-1.2-flash | —（這一輪的最後一棒） | 第 1 輪第 3 棒 | 未送達 | — | [文字](2026-11-09/relay-r1-4-gemini-omni-1.2-flash.md) | — |
 | 1 | 4 | 2026-11-08 | google/gemini-omni-1.2-flash | —（這一輪的最後一棒） | 第 1 輪第 3 棒 | 未送達 | — | [文字](2026-11-08/relay-r1-4-gemini-omni-1.2-flash.md) | — |
 | 1 | 3 | 2026-11-07 | meta-llama/llama-4-maverick | google/gemini-omni-1.2-flash | 第 1 輪第 2 棒 | 已送達 | 1187 | [文字](2026-11-07/relay-r1-3-llama-4-maverick.md) | [token](2026-11-07/token/relay-r1-3-llama-4-maverick.md) |
 | 1 | 2 | 2026-11-06 | openai/gpt-6.1-terra-pro | meta-llama/llama-4-maverick | 第 1 輪第 1 棒 | 已送達 | 1264 | [文字](2026-11-06/relay-r1-2-gpt-6.1-terra-pro.md) | [token](2026-11-06/token/relay-r1-2-gpt-6.1-terra-pro.md) |
