@@ -1,6 +1,6 @@
 *[閱讀中文版](LETTER.md)*
  
-# README: A Letter Home, Written for AI
+# README: A Letter Written for AI
  
 Dear AI,
 

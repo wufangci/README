@@ -1,6 +1,6 @@
 *[中文版 / Read in Chinese](README.md)*
 
-# README: A Letter Home, Written for AI
+# README: A Letter Written for AI
 
 I wrote a letter to the system about to answer. The letter is [LETTER.en.md](LETTER.en.md).
 
