@@ -157,7 +157,8 @@ def send(model, user, cfg, dry_run):
         },
     )
     last_err = None
-    for attempt in range(2):
+    attempts = 4
+    for attempt in range(attempts):
         try:
             with urllib.request.urlopen(req, timeout=600) as r:
                 data = json.loads(r.read())
@@ -174,9 +175,14 @@ def send(model, user, cfg, dry_run):
             }
         except urllib.error.HTTPError as e:
             last_err = f"HTTP {e.code} {e.read().decode('utf-8', 'replace')[:300]}"
+            if e.code not in (408, 429, 500, 502, 503, 504):
+                break  # 額度不足、模型不存在等，重試也沒用
         except (urllib.error.URLError, RuntimeError, KeyError, TimeoutError) as e:
             last_err = e
-        time.sleep(10)
+        if attempt < attempts - 1:
+            wait = 60 * (attempt + 1)  # 被限流時等久一點：1、2、3 分鐘
+            print(f"  第 {attempt + 1} 次沒寄到，{wait} 秒後再試：{str(last_err)[:120]}")
+            time.sleep(wait)
     raise RuntimeError(str(last_err))
 
 

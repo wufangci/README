@@ -3,11 +3,12 @@
   "omit_lines": ["吳方娸 ljaljuy tjavelengan"],
   "replace": { "那個吳碧玉的孫女": " vuvu 的孫女" },
 
+  "recipients_note": "固定版本，整個接力期間收件者不換人。之前用 latest: 自動挑最新模型，11-08 起 Gemini 被換成剛推出的 gemini-omni-1.2-flash，連續兩天被限流而寄不到。",
   "recipients": [
-    { "model": "latest:anthropic/claude-sonnet" },
-    { "model": "latest:openai/gpt-", "exclude": ["mini", "nano", "oss", "audio", "image", "realtime", "codex", "search", "chat", "turbo", "instruct"] },
-    { "model": "latest:google/gemini-", "exclude": ["lite", "image", "tts", "embedding", "exp", "thinking"] },
-    { "model": "latest:meta-llama/llama-", "exclude": ["guard", "vision"] }
+    { "model": "anthropic/claude-sonnet-5.5" },
+    { "model": "openai/gpt-6.1-terra-pro" },
+    { "model": "google/gemini-4-argon" },
+    { "model": "meta-llama/llama-4-maverick" }
   ],
 
   "rounds_note": "每一輪的棒次，數字是 recipients 的位置：0 Claude、1 GPT、2 Gemini、3 Llama。平衡排法：每個人工智慧在每一棒各坐一次，也讀過其他三個的信各一次。",
